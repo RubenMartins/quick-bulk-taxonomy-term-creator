@@ -9,7 +9,7 @@
  * Plugin URI: https://github.com/tyxla/quick-bulk-taxonomy-term-creator
  * License: GPL2
  * Requires at least: 3.0.1
- * Tested up to: 4.5
+ * Tested up to: 4.8
  */
 
 /**
