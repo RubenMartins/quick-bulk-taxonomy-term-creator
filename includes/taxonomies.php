@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Handles functionality, related to term taxonomies.
  */

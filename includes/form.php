@@ -104,6 +104,14 @@ class QBTTC_Form {
 				'options' => QBTTC_Taxonomies::get_taxonomies(),
 				'required' => true,
 			),
+			'parent_taxonomy' => array(
+				'type' => 'select_taxonomies',
+				'title' => __('Parent Taxonomy', 'qbttc'),
+				'default' => '0',
+				'help' => __('The parent taxonomy that you want to bulk insert terms into.', 'qbttc'),
+				'taxonomy' => 'category',
+				'required' => false,
+			),
 			'terms' => array(
 				'type' => 'textarea',
 				'title' => __('Terms (one per line)', 'qbttc'),
@@ -136,6 +144,8 @@ class QBTTC_Form {
 			$field_object = QBTTC_Field::factory($field['type'], 'qbttc_' . $field_id, $field['title'], $this->get_menu_id(), $this->get_menu_id());
 			if (isset($field['options'])) {
 				$field_object->set_options($field['options']);
+			}      if (isset($field['taxonomy'])) {
+				$field_object->set_taxonomy($field['taxonomy']);
 			}
 			$this->fields[] = $field_object;
 		}
@@ -156,7 +166,7 @@ class QBTTC_Form {
 		// render the form template
 		include_once($template);
 	}
-
+  
 	/**
 	 * Display the errors/notices of this plugin.
 	 *
@@ -193,15 +203,20 @@ class QBTTC_Form {
 		if (!$taxonomy) {
 			$taxonomy = 'category';
 		}
+		// determine taxonomy parent id
+		$parent = get_option('qbttc_parent_taxonomy');
+		if (!$parent) {
+			$parent = 0;
+		}
 
 		// insert the terms hierarchy
-		$total_terms = QBTTC_Taxonomies::process_hierarchy($hierarchy->get_hierarchy(), $taxonomy);
+		$total_terms = QBTTC_Taxonomies::process_hierarchy($hierarchy->get_hierarchy(), $taxonomy, $parent);
 
 		// empty the terms field
 		update_option('qbttc_terms', '');
 
 		// add success notice
-		$notice = sprintf( _n('1 term inserted.', '%s terms inserted.', $total_terms, 'qbttc'), $total_terms );
+		$notice = sprintf( _n('1 term inserted.', '%s terms inserted.', $total_terms, 'qbttc'), $total_terms );		$notice .= ' parent: '.$parent;
 
 		// append existing terms to the notice
 		if (QBTTC_Taxonomies::$existing_terms) {
@@ -218,5 +233,6 @@ class QBTTC_Form {
 		// display notice
 		add_settings_error('qbttc', 'settings_updated', $notice, 'updated ');
 	}
+  
 
 }

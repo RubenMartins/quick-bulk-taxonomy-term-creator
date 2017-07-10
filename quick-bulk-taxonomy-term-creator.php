@@ -67,6 +67,7 @@ class QBTTC {
 		require_once($this->get_plugin_path() . '/includes/field-text.php');
 		require_once($this->get_plugin_path() . '/includes/field-textarea.php');
 		require_once($this->get_plugin_path() . '/includes/field-select.php');
+		require_once($this->get_plugin_path() . '/includes/field-select-taxonomies.php');
 		require_once($this->get_plugin_path() . '/includes/form.php');
 	}
 

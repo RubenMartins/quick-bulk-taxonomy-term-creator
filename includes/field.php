@@ -51,6 +51,9 @@ abstract class QBTTC_Field {
 		);
 
 		register_setting( $page_id, $id );
+    
+    
+    add_action( 'wp_ajax_qbt_select_change', array( $this, 'qbt_select_change') );
 	}
 
 	/**
@@ -67,19 +70,7 @@ abstract class QBTTC_Field {
 	 * @return QBTTC_Field $field
 	 */
 	static function factory($type, $id, $title, $page_id, $section = '', $args = array()) {
-		$type = str_replace(" ", '', ucwords(str_replace("_", ' ', $type)));
-
-		$class = 'QBTTC_Field_' . $type;
-
-		if (!class_exists($class)) {
-			throw new Exception('Unknown settings field type "' . $type . '".');
-		}
-
-		$field = new $class($id, $title, $page_id, $section, $args);
-
-		return $field;
-	}
-
+		$type = str_replace(" ", '', ucwords(str_replace("_", ' ', $type)));		$class = 'QBTTC_Field_' . $type;		if (!class_exists($class)) {			throw new Exception('Unknown settings field type "' . $type . '".');		}		$field = new $class($id, $title, $page_id, $section, $args);		return $field;	}
 	/**
 	 * Retrieve the field title.
 	 *
@@ -181,6 +172,7 @@ abstract class QBTTC_Field {
 		}
 	}
 
+  
 	/**
 	 * Render this field.
 	 *
