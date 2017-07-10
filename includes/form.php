@@ -234,5 +234,4 @@ class QBTTC_Form {
 		add_settings_error('qbttc', 'settings_updated', $notice, 'updated ');
 	}
   
-
 }
